@@ -1,6 +1,11 @@
 import streamlit as st
-import json
-import os
+
+from core import (
+    load_recipes,
+    find_matching_recipes,
+    generate_shopping_list,
+    get_category,
+)
 
 # 页面配置
 st.set_page_config(
@@ -60,73 +65,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-@st.cache_data
-def load_recipes():
-    """加载菜谱数据"""
-    json_path = os.path.join(os.path.dirname(__file__), ".mimocode", "skills", "recipe-assistant", "recipes.json")
-    with open(json_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return data["recipes"], data["ingredient_categories"]
-
-
-def find_matching_recipes(recipes, ingredients=None, taste=None, category=None, difficulty=None):
-    """查找匹配的菜谱"""
-    results = []
-
-    for recipe in recipes:
-        score = 0
-
-        # 食材匹配
-        if ingredients:
-            matched = sum(1 for ing in ingredients
-                        if any(ing in rIng or rIng in ing for rIng in recipe["main_ingredients"]))
-            if matched > 0:
-                score += matched * 10
-            else:
-                continue
-
-        # 口味匹配
-        if taste:
-            if any(taste in t for t in recipe["taste"]):
-                score += 5
-            else:
-                continue
-
-        # 分类匹配
-        if category and recipe["category"] != category:
-            continue
-
-        # 难度匹配
-        if difficulty and recipe["difficulty"] != difficulty:
-            continue
-
-        if score > 0 or (not ingredients and not taste):
-            results.append((score, recipe))
-
-    # 按分数排序
-    results.sort(key=lambda x: x[0], reverse=True)
-    return [r[1] for r in results]
-
-
-def generate_shopping_list(recipes, owned_ingredients):
-    """生成购物清单"""
-    needed = {}
-
-    for recipe in recipes:
-        for ing in recipe["main_ingredients"] + recipe["seasonings"]:
-            if not any(own in ing or ing in own for own in owned_ingredients):
-                needed[ing] = needed.get(ing, 0) + 1
-
-    return needed
-
-
-def get_category(ingredient, categories):
-    """获取食材分类"""
-    for cat, items in categories.items():
-        if ingredient in items:
-            return cat
-    return "其他"
-
+# 数据加载与匹配逻辑见 core.py；Agent 对话逻辑见 agent.py
 
 # 加载数据
 recipes, categories = load_recipes()
@@ -136,7 +75,7 @@ with st.sidebar:
     st.markdown("## 🍳 功能导航")
     page = st.radio(
         "选择功能",
-        ["🏠 首页", "🔍 按食材找菜", "🌶️ 按口味找菜", "📝 生成购物清单", "📖 菜谱大全"],
+        ["🏠 首页", "🤖 AI 助手", "🔍 按食材找菜", "🌶️ 按口味找菜", "📝 生成购物清单", "📖 菜谱大全"],
         label_visibility="collapsed"
     )
 
@@ -179,6 +118,61 @@ if page == "🏠 首页":
                     st.markdown(f"**{recipe['name']}**")
                     st.caption(f"{recipe['difficulty']} | {recipe['time']}")
                     st.caption(f"{' '.join(recipe['taste'])}")
+
+# AI 助手（Agent + 大模型）
+elif page == "🤖 AI 助手":
+    from agent import is_configured, run_agent
+
+    st.markdown("### 🤖 AI 主厨")
+    st.caption("用自然语言和我对话：'我有鸡蛋和番茄能做什么？' / '宫保鸡丁怎么做？' / '帮我列购物清单'")
+
+    ok, err = is_configured()
+    if not ok:
+        st.error(err)
+    else:
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+
+        # 渲染历史消息
+        for msg in st.session_state.chat_history:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+
+        prompt = st.chat_input("试试：我有鸡蛋和番茄，能做什么？")
+        if prompt:
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+
+            with st.chat_message("assistant"):
+                answer = ""
+                try:
+                    # 先跑 Agent 循环，工具调用过程实时显示在 status 里
+                    with st.status("🍳 AI 主厨思考中...", expanded=True) as status:
+                        events = run_agent(
+                            prompt,
+                            history=st.session_state.chat_history[:-1],
+                        )
+                        for ev in events:
+                            if ev["type"] == "tool":
+                                status.write(f"🔧 调用工具 `{ev['name']}` — {ev['brief']}")
+                            elif ev["type"] == "answer":
+                                answer = ev["content"]
+                    if answer:
+                        st.markdown(answer)
+                    else:
+                        answer = "模型没有返回内容，请重试。"
+                        st.warning(answer)
+                except Exception as e:
+                    answer = f"⚠️ 调用出错：{e}"
+                    st.error(answer)
+
+                st.session_state.chat_history.append({"role": "assistant", "content": answer})
+
+        if st.session_state.chat_history:
+            if st.button("🗑️ 清空对话"):
+                st.session_state.chat_history = []
+                st.rerun()
 
 # 按食材找菜
 elif page == "🔍 按食材找菜":

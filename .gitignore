@@ -1,0 +1,11 @@
+# 密钥与本地配置——绝不上传 GitHub
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE（可选：如不想上传 IDE 配置）
+.idea/
+.vscode/

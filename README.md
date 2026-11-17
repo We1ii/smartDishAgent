@@ -35,6 +35,48 @@ streamlit run app.py
 python cli.py
 ```
 
+### 方式三：AI 助手（Agent + 大模型）
+
+通过 OpenAI 兼容接口接入大模型（默认小米 MiMo，也可换 DeepSeek / 通义 / Kimi 等），使用 Function Calling 让模型自主调用查菜谱、看做法、生成购物清单三个工具：
+
+```bash
+pip install -r requirements.txt
+
+# 复制配置模板，然后在 .env 里填入真实 API Key（.env 已被 .gitignore 忽略，不会上传）
+copy .env.example .env     # Windows
+# cp .env.example .env     # Linux / macOS
+
+streamlit run app.py
+```
+
+`.env` 文件内容：
+
+```ini
+LLM_API_KEY=你的APIKey
+LLM_BASE_URL=https://api.xiaomimimo.com/v1   # 默认小米 MiMo，可换其他兼容接口
+LLM_MODEL=mimo-v2.6-flash                    # 可换其他模型名
+```
+
+启动后在侧边栏选择「🤖 AI 助手」，即可自然语言对话，例如：
+
+- 「我有鸡蛋和番茄，能做什么？」
+- 「宫保鸡丁怎么做？」
+- 「想做麻婆豆腐和番茄炒蛋，帮我列购物清单，我已经有盐和食用油」
+
+#### Agent 架构
+
+```
+用户输入 -> LLM（决定调哪个工具）-> 工具执行（core.py 规则引擎 + recipes.json）
+        -> 结果回填 LLM -> 循环（最多 6 轮）-> 最终自然语言回答
+```
+
+| 文件 | 职责 |
+|------|------|
+| `core.py` | 数据加载与匹配逻辑（Web / Agent 共用） |
+| `agent.py` | LLM 客户端、工具定义、Function Calling 主循环 |
+| `app.py` | Streamlit 界面，含「🤖 AI 助手」聊天页 |
+
+
 ## 使用示例
 
 ### 按食材找菜
@@ -79,6 +121,8 @@ python cli.py
 smartDishAgent/
 ├── app.py                          # Web 应用主文件
 ├── cli.py                          # 命令行版本
+├── core.py                         # 公共业务逻辑（数据加载/匹配/购物清单）
+├── agent.py                        # AI Agent（LLM + Function Calling）
 ├── requirements.txt                # 依赖文件
 ├── .mimocode/
 │   └── skills/
