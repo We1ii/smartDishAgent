@@ -1,6 +1,11 @@
 # 密钥与本地配置——绝不上传 GitHub
 .env
 
+# 运行日志与生成的数据库（种子 JSON data/seed/ 要入库）
+logs/
+data/*.db
+data/*.db-journal
+
 # Python
 __pycache__/
 *.pyc

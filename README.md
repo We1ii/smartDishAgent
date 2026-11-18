@@ -8,6 +8,7 @@
 - 🌶️ **口味筛选** - 按酸甜、麻辣、清淡等口味筛选
 - 📝 **购物清单** - 自动计算缺少的食材并生成清单
 - 👨‍🍳 **详细做法** - 提供完整的烹饪步骤
+- 🤖 **AI 助手** - 大模型自然语言对话，流式逐字输出，历史会话持久化（刷新不丢）
 
 ## 运行方式
 
@@ -66,14 +67,17 @@ LLM_MODEL=mimo-v2.6-flash                    # 可换其他模型名
 #### Agent 架构
 
 ```
-用户输入 -> LLM（决定调哪个工具）-> 工具执行（core.py 规则引擎 + recipes.json）
+用户输入 -> LLM（决定调哪个工具）-> 工具执行（core.py 规则引擎 + SQLite 菜谱库）
         -> 结果回填 LLM -> 循环（最多 6 轮）-> 最终自然语言回答
 ```
 
 | 文件 | 职责 |
 |------|------|
-| `core.py` | 数据加载与匹配逻辑（Web / Agent 共用） |
-| `agent.py` | LLM 客户端、工具定义、Function Calling 主循环 |
+| `core.py` | 数据加载与匹配逻辑（Web / Agent 共用），用量合并 |
+| `recipe_store.py` | 菜谱存储层：SQLite 主库 + 种子 JSON 导入 + Pydantic 校验 |
+| `agent.py` | LLM 客户端、工具定义、Function Calling 主循环（流式输出 + Pydantic 入参校验） |
+| `llm_utils.py` | 调用基础设施：指数退避重试、错误分类、结构化日志（写 `logs/agent.log`） |
+| `chat_store.py` | 会话持久化：SQLite 存对话历史（`data/chat.db`，刷新不丢） |
 | `app.py` | Streamlit 界面，含「🤖 AI 助手」聊天页 |
 
 
@@ -103,17 +107,19 @@ LLM_MODEL=mimo-v2.6-flash                    # 可换其他模型名
 
 ## 菜谱数据库
 
-内置 20 道精选家常菜，涵盖：
+**120 道菜谱**（原始 20 道 + 批量扩充 100 道），存储在 SQLite（`data/recipes.db`，自动生成），涵盖：
 
-| 分类 | 菜品 |
-|------|------|
-| 家常菜 | 番茄炒蛋、红烧肉、可乐鸡翅、糖醋排骨、酸辣土豆丝 |
-| 川菜 | 宫保鸡丁、麻婆豆腐、鱼香肉丝、回锅肉、水煮肉片 |
-| 素菜 | 蒜蓉西兰花、清炒时蔬、干煸豆角 |
-| 海鲜 | 白灼虾 |
-| 凉菜 | 凉拌黄瓜 |
-| 汤类 | 紫菜蛋花汤、西红柿牛腩汤 |
-| 主食 | 蛋炒饭、咖喱鸡肉饭 |
+| 分类 | 数量 | 代表菜 |
+|------|------|--------|
+| 家常菜 | 37 | 番茄炒蛋、红烧肉、鱼香茄子、黄焖鸡、糖醋里脊 |
+| 川菜 | 18 | 宫保鸡丁、水煮鱼、辣子鸡、毛血旺、酸菜鱼 |
+| 素菜 | 17 | 地三鲜、香菇青菜、蚝油生菜、松仁玉米 |
+| 汤类 | 14 | 玉米排骨汤、酸辣汤、银耳莲子汤、鲫鱼豆腐汤 |
+| 主食 | 13 | 蛋炒饭、担担面、葱油拌面、猪肉白菜饺子 |
+| 凉菜 | 11 | 凉拌黄瓜、口水鸡、夫妻肺片、皮蛋豆腐 |
+| 海鲜 | 10 | 清蒸鲈鱼、油焖大虾、葱姜炒蛤蜊 |
+
+新菜谱 schema 支持**食材用量**和**份量**，购物清单会自动合并同类用量（如 2 个番茄 + 1 个番茄 → 3 个番茄）。
 
 ## 项目结构
 
@@ -121,36 +127,65 @@ LLM_MODEL=mimo-v2.6-flash                    # 可换其他模型名
 smartDishAgent/
 ├── app.py                          # Web 应用主文件
 ├── cli.py                          # 命令行版本
-├── core.py                         # 公共业务逻辑（数据加载/匹配/购物清单）
-├── agent.py                        # AI Agent（LLM + Function Calling）
-├── requirements.txt                # 依赖文件
-├── .mimocode/
-│   └── skills/
-│       └── recipe-assistant/
-│           ├── recipes.json        # 菜谱数据库
-│           ├── SKILL.md            # MiMoCode 技能定义
-│           └── shopping-list-generator.js
+├── core.py                         # 公共业务逻辑（数据加载/匹配/用量合并）
+├── recipe_store.py                 # 菜谱存储层（SQLite + 种子导入 + Pydantic 校验）
+├── agent.py                        # AI Agent（LLM + Function Calling + 流式输出）
+├── llm_utils.py                    # 重试退避 / 错误分类 / 结构化日志
+├── chat_store.py                   # 对话历史持久化（SQLite）
+├── scripts/
+│   └── import_recipes.py           # 菜谱数据导入工具
+├── data/
+│   ├── seed/                       # 菜谱种子数据（入库）
+│   │   ├── recipes_gen_1~4.json    # 批量扩充的 100 道
+│   │   └── zz_categories_patch.json
+│   └── recipes.db                  # 生成的主库（gitignore）
+├── requirements.txt
+├── .mimocode/skills/recipe-assistant/
+│   └── recipes.json                # 原始 20 道种子
 └── README.md
 ```
 
 ## 扩展菜谱
 
-编辑 `.mimocode/skills/recipe-assistant/recipes.json` 添加新菜谱：
+**方式一（推荐）：新建种子文件后导入**
+
+在 `data/seed/` 下新建 JSON 文件（格式见下），然后：
+
+```bash
+python scripts/import_recipes.py                    # 导入全部种子（增量、幂等）
+python scripts/import_recipes.py data/seed/xx.json  # 只导入指定文件
+python scripts/import_recipes.py --rebuild          # 编辑旧种子后删库重建
+python scripts/import_recipes.py --stats            # 查看库内统计
+```
+
+**方式二：直接编辑种子文件**（改完必须 `--rebuild` 才生效）
 
 ```json
 {
-  "id": 21,
-  "name": "新菜名",
-  "category": "分类",
-  "taste": ["口味标签"],
-  "difficulty": "简单|中等|较难",
-  "time": "XX分钟",
-  "main_ingredients": ["食材1", "食材2"],
-  "seasonings": ["调料1", "调料2"],
-  "steps": ["步骤1", "步骤2"],
-  "tags": ["标签1", "标签2"]
+  "recipes": [
+    {
+      "id": 201,
+      "name": "新菜名",
+      "category": "家常菜",
+      "taste": ["咸鲜"],
+      "difficulty": "简单",
+      "time": "20分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "食材1", "amount": "200克"},
+        {"name": "食材2", "amount": "1根"}
+      ],
+      "seasonings": [{"name": "盐", "amount": "适量"}],
+      "steps": ["步骤1", "步骤2"],
+      "tags": ["标签"]
+    }
+  ],
+  "ingredient_categories": {"蔬菜": ["食材2"]}
 }
 ```
+
+校验规则：分类限 `家常菜/川菜/素菜/海鲜/凉菜/汤类/主食`，难度限 `简单/中等/较难`，必须有主料和步骤；新食材记得补进 `ingredient_categories`（否则购物清单归入"其他"）。食材写法兼容旧的纯字符串 `["番茄"]`。
+
 
 ## License
 

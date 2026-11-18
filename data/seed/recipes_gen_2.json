@@ -1,0 +1,673 @@
+{
+  "recipes": [
+    {
+      "id": 126,
+      "name": "蒜香排骨",
+      "category": "家常菜",
+      "taste": ["蒜香", "咸香"],
+      "difficulty": "中等",
+      "time": "40分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "排骨", "amount": "500克"}
+      ],
+      "seasonings": [
+        {"name": "蒜", "amount": "1整头"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "淀粉", "amount": "2勺"},
+        {"name": "食用油", "amount": "适量"}
+      ],
+      "steps": [
+        "排骨剁小段泡去血水，沥干",
+        "蒜切末，一半腌排骨（加料酒、酱油、蒜末腌30分钟），一半留用",
+        "腌好的排骨裹上淀粉",
+        "五成油温炸8分钟至金黄捞出，复炸30秒，撒上炸蒜末"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 127,
+      "name": "红烧鸡腿",
+      "category": "家常菜",
+      "taste": ["咸鲜", "微甜"],
+      "difficulty": "简单",
+      "time": "30分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "鸡腿", "amount": "3个"}
+      ],
+      "seasonings": [
+        {"name": "姜", "amount": "3片"},
+        {"name": "酱油", "amount": "2勺"},
+        {"name": "冰糖", "amount": "10克"},
+        {"name": "料酒", "amount": "1勺"}
+      ],
+      "steps": [
+        "鸡腿两面划刀，焯水洗净",
+        "热锅下冰糖炒至融化冒小泡，放入鸡腿裹上糖色",
+        "加姜片、酱油、料酒和清水没过一半",
+        "中火焖15分钟，大火收汁至浓稠"
+      ],
+      "tags": ["下饭菜", "孩子爱吃的菜"]
+    },
+    {
+      "id": 128,
+      "name": "糖醋里脊",
+      "category": "家常菜",
+      "taste": ["酸甜"],
+      "difficulty": "中等",
+      "time": "35分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "里脊肉", "amount": "300克"}
+      ],
+      "seasonings": [
+        {"name": "淀粉", "amount": "半碗"},
+        {"name": "醋", "amount": "3勺"},
+        {"name": "糖", "amount": "3勺"},
+        {"name": "番茄酱", "amount": "2勺"},
+        {"name": "食用油", "amount": "适量"}
+      ],
+      "steps": [
+        "里脊切条，加盐和料酒腌15分钟，裹上淀粉糊",
+        "五成油温炸至浅黄捞出，升高油温复炸至酥脆",
+        "另起锅小火将糖、醋、番茄酱熬成冒泡的糖醋汁",
+        "倒入里脊快速翻匀，使每块都裹上酱汁"
+      ],
+      "tags": ["硬菜", "孩子爱吃的菜"]
+    },
+    {
+      "id": 129,
+      "name": "鱼香茄子",
+      "category": "家常菜",
+      "taste": ["酸甜", "微辣"],
+      "difficulty": "中等",
+      "time": "25分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "茄子", "amount": "2根"},
+        {"name": "猪肉末", "amount": "100克"}
+      ],
+      "seasonings": [
+        {"name": "泡椒", "amount": "1勺"},
+        {"name": "醋", "amount": "2勺"},
+        {"name": "糖", "amount": "1勺"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "淀粉", "amount": "1勺"},
+        {"name": "蒜", "amount": "3瓣"}
+      ],
+      "steps": [
+        "茄子切条，用盐腌10分钟挤去水分",
+        "调鱼香汁：醋、糖、酱油、淀粉加水拌匀",
+        "热油下泡椒和蒜末炒出红油，倒入肉末炒散",
+        "下茄子翻炒2分钟，淋鱼香汁收汁出锅"
+      ],
+      "tags": ["下饭菜", "米饭杀手"]
+    },
+    {
+      "id": 130,
+      "name": "洋葱炒肉",
+      "category": "家常菜",
+      "taste": ["咸鲜", "葱香"],
+      "difficulty": "简单",
+      "time": "12分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "洋葱", "amount": "1个"},
+        {"name": "猪肉", "amount": "150克"}
+      ],
+      "seasonings": [
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "食用油", "amount": "2勺"}
+      ],
+      "steps": [
+        "洋葱切丝，猪肉切片用料酒酱油抓匀",
+        "热油下肉片滑炒至变色",
+        "倒入洋葱丝大火炒至断生微透明",
+        "加盐翻匀出锅"
+      ],
+      "tags": ["快手菜", "家常"]
+    },
+    {
+      "id": 131,
+      "name": "辣子鸡",
+      "category": "川菜",
+      "taste": ["麻辣", "咸香"],
+      "difficulty": "中等",
+      "time": "40分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "鸡腿", "amount": "2个"},
+        {"name": "干辣椒", "amount": "1大把"},
+        {"name": "花椒", "amount": "1勺"}
+      ],
+      "seasonings": [
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "姜", "amount": "3片"},
+        {"name": "食用油", "amount": "适量"},
+        {"name": "白芝麻", "amount": "少许"}
+      ],
+      "steps": [
+        "鸡腿剁小块，加料酒、酱油、姜片腌20分钟",
+        "六成油温炸至金黄干香捞出",
+        "锅留底油，小火慢焙干辣椒和花椒至香味逸出",
+        "倒入鸡块翻炒均匀，撒白芝麻出锅"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 132,
+      "name": "水煮鱼",
+      "category": "川菜",
+      "taste": ["麻辣"],
+      "difficulty": "较难",
+      "time": "45分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "草鱼", "amount": "1条"},
+        {"name": "豆芽", "amount": "200克"},
+        {"name": "黄瓜", "amount": "1根"}
+      ],
+      "seasonings": [
+        {"name": "豆瓣酱", "amount": "2勺"},
+        {"name": "干辣椒", "amount": "6个"},
+        {"name": "花椒", "amount": "1勺"},
+        {"name": "淀粉", "amount": "1勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "食用油", "amount": "4勺"}
+      ],
+      "steps": [
+        "草鱼片成薄片，鱼头鱼骨另放；鱼片加蛋清、淀粉、料酒抓匀",
+        "豆芽黄瓜焯水垫在大碗底",
+        "热油下豆瓣酱炒出红油，加鱼头鱼骨和水煮成汤底，下鱼片滑熟连汤倒入碗中",
+        "撒干辣椒段、花椒、蒜末，淋一勺滚油激香"
+      ],
+      "tags": ["硬菜", "川菜经典"]
+    },
+    {
+      "id": 133,
+      "name": "酸菜鱼",
+      "category": "川菜",
+      "taste": ["酸辣", "鲜美"],
+      "difficulty": "中等",
+      "time": "40分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "草鱼", "amount": "1条"},
+        {"name": "酸菜", "amount": "150克"}
+      ],
+      "seasonings": [
+        {"name": "泡椒", "amount": "5个"},
+        {"name": "姜", "amount": "4片"},
+        {"name": "花椒", "amount": "半勺"},
+        {"name": "淀粉", "amount": "1勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "食用油", "amount": "3勺"}
+      ],
+      "steps": [
+        "鱼片片好加料酒、淀粉抓匀，鱼骨剁段",
+        "酸菜挤干切段，热油下泡椒、姜、酸菜炒香",
+        "加清水煮开，先下鱼骨煮5分钟，再滑入鱼片煮至变色",
+        "连汤倒入碗中，撒花椒淋热油"
+      ],
+      "tags": ["川菜经典", "下饭菜"]
+    },
+    {
+      "id": 134,
+      "name": "干煸牛肉丝",
+      "category": "川菜",
+      "taste": ["麻辣", "咸香"],
+      "difficulty": "中等",
+      "time": "30分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "牛肉", "amount": "300克"},
+        {"name": "芹菜", "amount": "150克"}
+      ],
+      "seasonings": [
+        {"name": "干辣椒", "amount": "4个"},
+        {"name": "花椒", "amount": "半勺"},
+        {"name": "豆瓣酱", "amount": "1勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "食用油", "amount": "3勺"}
+      ],
+      "steps": [
+        "牛肉逆纹切细丝，加料酒腌15分钟",
+        "中火慢煸牛肉丝至干香微焦，盛出",
+        "底油下干辣椒、花椒、豆瓣酱炒出红油",
+        "回锅牛肉丝，加入芹菜段翻炒1分钟出锅"
+      ],
+      "tags": ["下饭菜", "川菜经典"]
+    },
+    {
+      "id": 135,
+      "name": "麻辣香锅",
+      "category": "川菜",
+      "taste": ["麻辣"],
+      "difficulty": "中等",
+      "time": "30分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "莲藕", "amount": "半节"},
+        {"name": "土豆", "amount": "1个"},
+        {"name": "虾", "amount": "10只"},
+        {"name": "木耳", "amount": "1小把"},
+        {"name": "火腿", "amount": "100克"}
+      ],
+      "seasonings": [
+        {"name": "豆瓣酱", "amount": "2勺"},
+        {"name": "干辣椒", "amount": "5个"},
+        {"name": "花椒", "amount": "1勺"},
+        {"name": "食用油", "amount": "3勺"},
+        {"name": "白芝麻", "amount": "少许"}
+      ],
+      "steps": [
+        "所有食材切好，分别焯水至断生沥干",
+        "热油下豆瓣酱、干辣椒、花椒炒出红油",
+        "按不易熟到易熟的顺序倒入食材大火翻炒",
+        "炒匀收汁，撒白芝麻出锅"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 136,
+      "name": "毛血旺",
+      "category": "川菜",
+      "taste": ["麻辣"],
+      "difficulty": "较难",
+      "time": "45分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "鸭血", "amount": "1盒"},
+        {"name": "午餐肉", "amount": "半盒"},
+        {"name": "豆腐", "amount": "1块"},
+        {"name": "豆芽", "amount": "150克"}
+      ],
+      "seasonings": [
+        {"name": "豆瓣酱", "amount": "2勺"},
+        {"name": "干辣椒", "amount": "6个"},
+        {"name": "花椒", "amount": "1勺"},
+        {"name": "蒜", "amount": "4瓣"},
+        {"name": "食用油", "amount": "4勺"}
+      ],
+      "steps": [
+        "鸭血午餐肉切片，豆腐切块，豆芽焯水垫底",
+        "热油下豆瓣酱炒出红油，加水煮成汤底",
+        "依次下豆腐、鸭血、午餐肉煮5分钟连汤倒入碗中",
+        "撒蒜末、干辣椒、花椒，淋滚油激香"
+      ],
+      "tags": ["硬菜", "川菜经典"]
+    },
+    {
+      "id": 137,
+      "name": "开水白菜",
+      "category": "川菜",
+      "taste": ["清淡", "鲜美"],
+      "difficulty": "较难",
+      "time": "60分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "白菜", "amount": "1棵"},
+        {"name": "鸡胸肉", "amount": "200克"}
+      ],
+      "seasonings": [
+        {"name": "姜", "amount": "3片"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "盐", "amount": "适量"}
+      ],
+      "steps": [
+        "鸡胸肉剁茸加水搅开，小火慢煮成清汤",
+        "汤汁反复吊清至金黄透亮",
+        "白菜取嫩心，焯水后用清汤煨入味",
+        "菜心盛入碗中，冲入热清汤即成"
+      ],
+      "tags": ["清淡", "待客菜"]
+    },
+    {
+      "id": 138,
+      "name": "粉蒸排骨",
+      "category": "川菜",
+      "taste": ["咸鲜", "微辣"],
+      "difficulty": "中等",
+      "time": "70分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "排骨", "amount": "500克"},
+        {"name": "米粉", "amount": "80克"},
+        {"name": "土豆", "amount": "1个"}
+      ],
+      "seasonings": [
+        {"name": "豆瓣酱", "amount": "1勺"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "姜", "amount": "3片"}
+      ],
+      "steps": [
+        "排骨剁段泡去血水，加豆瓣酱、酱油、料酒、姜片腌30分钟",
+        "倒入米粉拌匀裹满排骨",
+        "土豆切块垫碗底，铺上排骨",
+        "上锅大火蒸60分钟，撒葱花"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 139,
+      "name": "香辣虾",
+      "category": "川菜",
+      "taste": ["麻辣", "咸鲜"],
+      "difficulty": "中等",
+      "time": "25分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "虾", "amount": "400克"},
+        {"name": "土豆", "amount": "1个"}
+      ],
+      "seasonings": [
+        {"name": "干辣椒", "amount": "5个"},
+        {"name": "花椒", "amount": "半勺"},
+        {"name": "豆瓣酱", "amount": "1勺"},
+        {"name": "蒜", "amount": "4瓣"},
+        {"name": "食用油", "amount": "3勺"}
+      ],
+      "steps": [
+        "虾开背去虾线，土豆切条炸至金黄",
+        "热油下虾煎至两面变红盛出",
+        "底油爆香豆瓣酱、干辣椒、花椒、蒜",
+        "回锅虾和土豆条翻炒均匀出锅"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 140,
+      "name": "尖椒肥肠",
+      "category": "川菜",
+      "taste": ["麻辣", "咸香"],
+      "difficulty": "较难",
+      "time": "90分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "猪大肠", "amount": "400克"},
+        {"name": "青椒", "amount": "3个"}
+      ],
+      "seasonings": [
+        {"name": "豆瓣酱", "amount": "1勺"},
+        {"name": "干辣椒", "amount": "3个"},
+        {"name": "姜", "amount": "4片"},
+        {"name": "花椒", "amount": "半勺"},
+        {"name": "料酒", "amount": "2勺"}
+      ],
+      "steps": [
+        "猪大肠用盐和醋反复搓洗冲净，加姜片料酒煮40分钟至软烂",
+        "捞出切段，青椒切块",
+        "热油下豆瓣酱、花椒、干辣椒炒香，倒入肥肠煸炒",
+        "加青椒翻炒断生，调味出锅"
+      ],
+      "tags": ["硬菜", "下饭菜"]
+    },
+    {
+      "id": 141,
+      "name": "麻辣手撕鸡",
+      "category": "川菜",
+      "taste": ["麻辣", "咸鲜"],
+      "difficulty": "简单",
+      "time": "40分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "鸡胸肉", "amount": "2块"}
+      ],
+      "seasonings": [
+        {"name": "花椒粉", "amount": "1勺"},
+        {"name": "辣椒油", "amount": "2勺"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "香油", "amount": "半勺"},
+        {"name": "蒜", "amount": "3瓣"}
+      ],
+      "steps": [
+        "鸡胸肉冷水下锅加姜片料酒煮15分钟，关火焖10分钟",
+        "捞出过冰水，顺着纹理撕成细条",
+        "蒜末加花椒粉、辣椒油、酱油、香油调成料汁",
+        "料汁淋在鸡丝上拌匀撒葱花"
+      ],
+      "tags": ["凉菜", "下饭菜"]
+    },
+    {
+      "id": 142,
+      "name": "老妈蹄花",
+      "category": "川菜",
+      "taste": ["清淡", "鲜美"],
+      "difficulty": "较难",
+      "time": "120分钟",
+      "servings": 3,
+      "main_ingredients": [
+        {"name": "猪蹄", "amount": "1只"}
+      ],
+      "seasonings": [
+        {"name": "姜", "amount": "5片"},
+        {"name": "花椒", "amount": "半勺"},
+        {"name": "料酒", "amount": "1勺"},
+        {"name": "小米椒", "amount": "3个"}
+      ],
+      "steps": [
+        "猪蹄剁块冷水下锅焯水，撇净浮沫",
+        "加姜片、花椒、料酒，加足量水大火烧开",
+        "转小火炖100分钟至汤白蹄软",
+        "盛出蘸小米椒酱油碟食用"
+      ],
+      "tags": ["炖菜", "清淡"]
+    },
+    {
+      "id": 143,
+      "name": "麻辣藕片",
+      "category": "川菜",
+      "taste": ["麻辣", "爽脆"],
+      "difficulty": "简单",
+      "time": "15分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "莲藕", "amount": "1节"}
+      ],
+      "seasonings": [
+        {"name": "花椒粉", "amount": "半勺"},
+        {"name": "辣椒油", "amount": "2勺"},
+        {"name": "醋", "amount": "1勺"},
+        {"name": "糖", "amount": "半勺"},
+        {"name": "香菜", "amount": "少许"}
+      ],
+      "steps": [
+        "莲藕去皮切薄片，清水冲去淀粉",
+        "沸水焯1分钟捞出过凉水保持脆感",
+        "花椒粉、辣椒油、醋、糖调成料汁",
+        "料汁拌匀藕片，撒香菜和白芝麻"
+      ],
+      "tags": ["凉菜", "快手菜"]
+    },
+    {
+      "id": 144,
+      "name": "香菇青菜",
+      "category": "素菜",
+      "taste": ["清淡", "鲜美"],
+      "difficulty": "简单",
+      "time": "10分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "香菇", "amount": "8朵"},
+        {"name": "青菜", "amount": "300克"}
+      ],
+      "seasonings": [
+        {"name": "蒜", "amount": "2瓣"},
+        {"name": "蚝油", "amount": "1勺"},
+        {"name": "食用油", "amount": "1勺"}
+      ],
+      "steps": [
+        "香菇切片，青菜对半切开洗净",
+        "热油爆香蒜片，下香菇炒软",
+        "倒入青菜大火翻炒至塌软",
+        "淋蚝油翻匀出锅"
+      ],
+      "tags": ["素菜", "快手菜"]
+    },
+    {
+      "id": 145,
+      "name": "上汤娃娃菜",
+      "category": "素菜",
+      "taste": ["清淡", "鲜美"],
+      "difficulty": "简单",
+      "time": "15分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "娃娃菜", "amount": "2棵"}
+      ],
+      "seasonings": [
+        {"name": "皮蛋", "amount": "1个"},
+        {"name": "蒜", "amount": "3瓣"},
+        {"name": "盐", "amount": "适量"},
+        {"name": "食用油", "amount": "1勺"}
+      ],
+      "steps": [
+        "娃娃菜切长条焯水摆盘",
+        "皮蛋切丁，热油爆香蒜末",
+        "加清水煮开，放入皮蛋丁煮2分钟成上汤",
+        "汤汁浇在娃娃菜上"
+      ],
+      "tags": ["素菜", "清淡"]
+    },
+    {
+      "id": 146,
+      "name": "白灼菜心",
+      "category": "素菜",
+      "taste": ["清淡", "爽脆"],
+      "difficulty": "简单",
+      "time": "8分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "菜心", "amount": "300克"}
+      ],
+      "seasonings": [
+        {"name": "酱油", "amount": "2勺"},
+        {"name": "食用油", "amount": "1勺"},
+        {"name": "姜", "amount": "2丝"}
+      ],
+      "steps": [
+        "水开加盐和几滴油，下菜心焯1分钟",
+        "捞出沥水整齐摆盘",
+        "淋酱油，撒姜丝",
+        "浇一勺滚油激香"
+      ],
+      "tags": ["素菜", "清淡"]
+    },
+    {
+      "id": 147,
+      "name": "蚝油生菜",
+      "category": "素菜",
+      "taste": ["咸鲜", "爽脆"],
+      "difficulty": "简单",
+      "time": "8分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "生菜", "amount": "1棵"}
+      ],
+      "seasonings": [
+        {"name": "蚝油", "amount": "1勺"},
+        {"name": "蒜", "amount": "3瓣"},
+        {"name": "食用油", "amount": "1勺"}
+      ],
+      "steps": [
+        "生菜掰开洗净沥干",
+        "热油爆香蒜末，加蚝油和少许水煮开",
+        "倒入生菜大火翻炒30秒即出锅",
+        "保持脆嫩口感，不宜久炒"
+      ],
+      "tags": ["素菜", "快手菜"]
+    },
+    {
+      "id": 148,
+      "name": "清炒山药",
+      "category": "素菜",
+      "taste": ["清淡", "爽脆"],
+      "difficulty": "简单",
+      "time": "12分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "山药", "amount": "1根"}
+      ],
+      "seasonings": [
+        {"name": "胡萝卜", "amount": "半根"},
+        {"name": "木耳", "amount": "1小把"},
+        {"name": "盐", "amount": "适量"},
+        {"name": "食用油", "amount": "1勺"}
+      ],
+      "steps": [
+        "山药去皮切菱形片，泡清水防氧化",
+        "木耳泡发，胡萝卜切片",
+        "热油下胡萝卜和木耳翻炒",
+        "倒入山药片大火炒2分钟，加盐出锅"
+      ],
+      "tags": ["素菜", "清淡"]
+    },
+    {
+      "id": 149,
+      "name": "荷塘小炒",
+      "category": "素菜",
+      "taste": ["清淡", "爽脆"],
+      "difficulty": "简单",
+      "time": "15分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "莲藕", "amount": "半节"},
+        {"name": "荷兰豆", "amount": "100克"},
+        {"name": "木耳", "amount": "1小把"},
+        {"name": "胡萝卜", "amount": "半根"}
+      ],
+      "seasonings": [
+        {"name": "盐", "amount": "适量"},
+        {"name": "食用油", "amount": "1勺"},
+        {"name": "蒜", "amount": "2瓣"}
+      ],
+      "steps": [
+        "所有食材切好，荷兰豆撕筋",
+        "沸水快速焯烫所有食材30秒捞出",
+        "热油爆香蒜片，倒入全部食材大火翻炒",
+        "加盐调味即出锅，保持脆爽"
+      ],
+      "tags": ["素菜", "快手菜"]
+    },
+    {
+      "id": 150,
+      "name": "地三鲜",
+      "category": "素菜",
+      "taste": ["咸鲜"],
+      "difficulty": "简单",
+      "time": "20分钟",
+      "servings": 2,
+      "main_ingredients": [
+        {"name": "茄子", "amount": "1根"},
+        {"name": "土豆", "amount": "1个"},
+        {"name": "青椒", "amount": "2个"}
+      ],
+      "seasonings": [
+        {"name": "蒜", "amount": "3瓣"},
+        {"name": "酱油", "amount": "1勺"},
+        {"name": "淀粉", "amount": "1勺"},
+        {"name": "食用油", "amount": "3勺"}
+      ],
+      "steps": [
+        "茄子、土豆、青椒切滚刀块",
+        "土豆和茄子分别过油至微焦捞出",
+        "底油爆香蒜末，加酱油和小半碗水煮开",
+        "倒入全部食材翻炒收汁，淋水淀粉勾芡"
+      ],
+      "tags": ["下饭菜", "素菜"]
+    }
+  ],
+  "ingredient_categories": {
+    "蔬菜": ["娃娃菜", "菜心", "生菜", "山药", "荷兰豆", "莲藕"],
+    "肉类": ["鸭血", "午餐肉", "猪大肠", "猪蹄"],
+    "海鲜": [],
+    "蛋奶豆": ["皮蛋"],
+    "主食": [],
+    "调味料": ["小米椒"]
+  }
+}

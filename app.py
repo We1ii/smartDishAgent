@@ -5,6 +5,7 @@ from core import (
     find_matching_recipes,
     generate_shopping_list,
     get_category,
+    format_ingredients,
 )
 
 # 页面配置
@@ -122,6 +123,13 @@ if page == "🏠 首页":
 # AI 助手（Agent + 大模型）
 elif page == "🤖 AI 助手":
     from agent import is_configured, run_agent
+    from chat_store import (
+        new_session_id,
+        sanitize_sid,
+        load_messages,
+        append_message,
+        clear_session,
+    )
 
     st.markdown("### 🤖 AI 主厨")
     st.caption("用自然语言和我对话：'我有鸡蛋和番茄能做什么？' / '宫保鸡丁怎么做？' / '帮我列购物清单'")
@@ -130,49 +138,85 @@ elif page == "🤖 AI 助手":
     if not ok:
         st.error(err)
     else:
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
+        # 会话 ID 存在 URL 参数里——浏览器刷新后 URL 不变，历史对话可恢复
+        sid = sanitize_sid(st.query_params.get("sid"))
+        if not sid:
+            sid = new_session_id()
+            st.query_params["sid"] = sid
+
+        history = load_messages(sid)  # SQLite 是权威数据源
 
         # 渲染历史消息
-        for msg in st.session_state.chat_history:
+        for msg in history:
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
+                if msg.get("caption"):
+                    st.caption(msg["caption"])
 
         prompt = st.chat_input("试试：我有鸡蛋和番茄，能做什么？")
         if prompt:
-            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            append_message(sid, "user", prompt)
             with st.chat_message("user"):
                 st.markdown(prompt)
 
             with st.chat_message("assistant"):
-                answer = ""
+                # status 放工具日志；answer_box 在其下方流式吐字；caption_box 放 token 统计
+                status = st.status("🍳 AI 主厨思考中...", expanded=True)
+                answer_box = st.empty()
+                caption_box = st.empty()
+
+                accumulated = ""
+                stream_started = False
+                answer, usage, is_error = "", None, False
+
                 try:
-                    # 先跑 Agent 循环，工具调用过程实时显示在 status 里
-                    with st.status("🍳 AI 主厨思考中...", expanded=True) as status:
-                        events = run_agent(
-                            prompt,
-                            history=st.session_state.chat_history[:-1],
-                        )
-                        for ev in events:
-                            if ev["type"] == "tool":
-                                status.write(f"🔧 调用工具 `{ev['name']}` — {ev['brief']}")
-                            elif ev["type"] == "answer":
-                                answer = ev["content"]
-                    if answer:
-                        st.markdown(answer)
-                    else:
-                        answer = "模型没有返回内容，请重试。"
-                        st.warning(answer)
+                    for ev in run_agent(prompt, history=history):
+                        if ev["type"] == "tool":
+                            status.write(f"🔧 调用工具 `{ev['name']}` — {ev['brief']}")
+                        elif ev["type"] == "delta":
+                            accumulated += ev["content"]
+                            answer_box.markdown(accumulated + " ▌")
+                            if not stream_started:
+                                stream_started = True
+                                # 第一个 token 到达后收起工具日志，让正文成为视觉主体
+                                status.update(label="✍️ 正在回答...", expanded=False)
+                        elif ev["type"] == "answer":
+                            answer = ev["content"]
+                            usage = ev.get("usage")
+                            is_error = bool(ev.get("error"))
                 except Exception as e:
-                    answer = f"⚠️ 调用出错：{e}"
-                    st.error(answer)
+                    answer, is_error = f"⚠️ 调用出错：{e}", True
 
-                st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                status.update(label="✅ 完成", state="complete", expanded=False)
 
-        if st.session_state.chat_history:
-            if st.button("🗑️ 清空对话"):
-                st.session_state.chat_history = []
-                st.rerun()
+                # 流中断但已有部分内容时，用已收到的文本兜底
+                if not answer and accumulated:
+                    answer = accumulated
+
+                caption = ""
+                if usage and (usage.get("prompt") or usage.get("completion")):
+                    caption = (
+                        f"🔄 {usage['turns']} 轮 · "
+                        f"tokens {usage['prompt']} prompt + {usage['completion']} completion"
+                    )
+
+                if is_error:
+                    answer_box.error(answer)
+                elif answer:
+                    answer_box.markdown(answer)
+                    if caption:
+                        caption_box.caption(caption)
+                else:
+                    answer = "模型没有返回内容，请重试。"
+                    answer_box.warning(answer)
+
+                # 持久化（错误提示不入库，避免污染后续对话上下文）
+                if answer and not is_error:
+                    append_message(sid, "assistant", answer, caption)
+
+        if st.button("🗑️ 清空对话"):
+            clear_session(sid)
+            st.rerun()
 
 # 按食材找菜
 elif page == "🔍 按食材找菜":
@@ -217,8 +261,8 @@ elif page == "🔍 按食材找菜":
                         col1, col2 = st.columns(2)
                         with col1:
                             st.markdown("**食材**")
-                            st.write(f"主料: {', '.join(recipe['main_ingredients'])}")
-                            st.write(f"调料: {', '.join(recipe['seasonings'])}")
+                            st.write(f"主料: {format_ingredients(recipe['main_ingredients'])}")
+                            st.write(f"调料: {format_ingredients(recipe['seasonings'])}")
                         with col2:
                             st.markdown("**口味与标签**")
                             st.write(f"口味: {', '.join(recipe['taste'])}")
@@ -267,8 +311,8 @@ elif page == "🌶️ 按口味找菜":
                         col1, col2 = st.columns(2)
                         with col1:
                             st.markdown("**食材**")
-                            st.write(f"主料: {', '.join(recipe['main_ingredients'])}")
-                            st.write(f"调料: {', '.join(recipe['seasonings'])}")
+                            st.write(f"主料: {format_ingredients(recipe['main_ingredients'])}")
+                            st.write(f"调料: {format_ingredients(recipe['seasonings'])}")
                         with col2:
                             st.markdown("**口味与标签**")
                             st.write(f"口味: {', '.join(recipe['taste'])}")
@@ -310,17 +354,18 @@ elif page == "📝 生成购物清单":
 
                 # 按分类显示
                 grouped = {}
-                for ing, count in shopping_list.items():
+                for ing, info in shopping_list.items():
                     cat = get_category(ing, categories)
                     if cat not in grouped:
                         grouped[cat] = []
-                    grouped[cat].append((ing, count))
+                    grouped[cat].append((ing, info))
 
                 for cat, items in grouped.items():
                     with st.expander(f"📦 {cat}（{len(items)}项）", expanded=True):
-                        for ing, count in sorted(items):
-                            suffix = f" ×{count}道菜" if count > 1 else ""
-                            st.checkbox(f"{ing}{suffix}", key=f"shop_{ing}")
+                        for ing, info in sorted(items):
+                            amount = f" {info['amount']}" if info["amount"] else ""
+                            suffix = f" ×{info['dishes']}道菜" if info["dishes"] > 1 else ""
+                            st.checkbox(f"{ing}{amount}{suffix}", key=f"shop_{ing}")
 
                 st.markdown("---")
                 st.info(f"共 **{len(shopping_list)}** 项需要购买")
@@ -364,8 +409,8 @@ elif page == "📖 菜谱大全":
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown("**食材**")
-                st.write(f"主料: {', '.join(recipe['main_ingredients'])}")
-                st.write(f"调料: {', '.join(recipe['seasonings'])}")
+                st.write(f"主料: {format_ingredients(recipe['main_ingredients'])}")
+                st.write(f"调料: {format_ingredients(recipe['seasonings'])}")
             with col2:
                 st.markdown("**口味与标签**")
                 st.write(f"口味: {', '.join(recipe['taste'])}")
